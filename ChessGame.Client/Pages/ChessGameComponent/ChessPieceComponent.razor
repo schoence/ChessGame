@@ -1,0 +1,83 @@
+﻿@using ChessGame.Common
+<div class="piece">
+    
+    @{
+        if (_piece is Pawn)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♟</div>
+            }
+            else
+            {
+                <div>♙</div>
+            }
+
+        }
+        if (_piece is Rook)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♖</div>
+            }
+            else
+            {
+                <div>♖</div>
+            }
+
+        }
+        if (_piece is Bishop)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♝</div>
+            }
+            else
+            {
+                <div>♗</div>
+            }
+
+        }
+        if (_piece is Knight)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♘</div>
+            }
+            else
+            {
+                <div>♞</div>
+            }
+
+        }
+        if (_piece is King)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♔</div>
+            }
+            else
+            {
+                <div>♚</div>
+            }
+
+        }
+        if (_piece is Queen)
+        {
+            if (_piece.Color == PieceColor.Black)
+            {
+                <div>♕</div>
+            }
+            else
+            {
+                <div>♛</div>
+            }
+        }
+    }
+</div>
+
+
+@code {
+
+    [Parameter] public Piece _piece { get; set; }
+}

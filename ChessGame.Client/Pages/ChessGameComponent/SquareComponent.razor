@@ -1,0 +1,89 @@
+﻿@using ChessGame.Common
+
+<td>
+    <div class="chess-square @color">
+        <div class="box @color">
+            @if (_square.IsOccupied)
+            {
+                <ChessPieceComponent _piece="@_square.Piece"/>
+            }
+            <div class="box @clicked @highlighted" @onclick="FirePieceSelected"></div>
+        </div>
+    </div>
+
+
+
+</td>
+
+
+
+
+@code {
+    private Square _square { get; set; }
+
+    [Parameter] public Square Square { get { return _square; } set {
+            _square = value;
+            UpdateState();
+        } }
+
+    [Parameter] public Action<List<Coords>> SetHighlighted { get; set; }
+    [Parameter] public Action RemoveHighlighted { get; set; }
+    [Parameter] public Action<Coords> SetSelectedSquare { get; set; }
+    [Parameter]public Action<Coords> MovePiece { get; set; }
+
+    private string color;
+    private string clicked;
+    private string highlighted;
+
+    public async Task FirePieceSelected()
+    {
+        if (_square.IsHighlighted) {
+            Console.WriteLine("Not Occupied and Is Highlighted from SquareComponent.razor");
+            MovePiece.Invoke(_square.Coords);
+            return;
+        }
+
+        if (!_square.IsOccupied)
+        {
+            RemoveHighlighted.Invoke();
+            return;
+        }
+
+        SetSelectedSquare.Invoke(_square.Coords);
+
+        Console.WriteLine("First One");
+
+        List<Coords> coords = await _square.Piece.TheoreticallyPossibleMoves(_square.Coords);
+        foreach(var coord in coords) {
+            Console.WriteLine($"{coord.x},{coord.y}");
+        }
+
+        SetHighlighted.Invoke(coords);
+    }
+
+    public void UpdateState() {
+        color = _square.Color == SquareColor.Black ? "dark" : "light";
+        highlighted = _square.IsHighlighted ? "clicked" : string.Empty;
+        clicked = _square.IsHighlighted ? "clicked" : string.Empty;
+    }
+
+    public void SquareUpdated() {
+
+    }
+
+    public void PieceSelected(List<Coords> coords) {
+        SetSquareClicked();
+    }
+
+    public void SetSquareClicked()
+    {
+        clicked = "clicked";
+        highlighted = string.Empty;
+    }
+
+    public void HighlightSquare()
+    {
+        highlighted = "clicked";
+        clicked = "";
+    }
+}

@@ -1,0 +1,15 @@
+﻿@page "/"
+
+<ChessGame.Client.Pages.ChessGameComponent.ChessGameComponent />
+
+<button @onclick="Reload">Reload</button>
+
+@code {
+    public void Reload() {
+        InvokeAsync(() =>
+                {
+
+                    StateHasChanged();
+                });
+    }
+}
